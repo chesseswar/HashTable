@@ -19,18 +19,34 @@ public class HashTable {
     }
 
     public Object put(Object key, Object value) {
-
-        Node output = null;
-        boolean collision = false;
-
-
-        table[key.hashCode()%table.length] = new Node(key, value);
-
+        Object output = null;
+        int hash = key.hashCode()%table.length;
+        if (table[hash] != null){
+            output = table[hash].value;
+            while (table[hash] != null) {
+                if (table[hash].key == key) {
+                    table[hash] = new Node(key, value);
+                    return null;
+                }
+                hash = indexIncrement(hash);
+            }
+            table[hash] = new Node(key, value);
+        }
+        table[hash] = new Node(key, value);
+        size++;
         return output;
     }
 
     public boolean contains(Object key){
         return get(key) != null;
+    }
+
+    public int indexIncrement(int index){
+        if (index + 1 < table.length){
+            return index + 1;
+        } else {
+            return 0;
+        }
     }
 
     public Object get(Object key){
