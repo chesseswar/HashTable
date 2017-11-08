@@ -23,8 +23,9 @@ public class HashTable {
         int hash = key.hashCode()%table.length;
         if (table[hash] != null){
             output = table[hash].value;
+            System.out.println("LINEAR PROBING: " + new Node(key, value));
             while (table[hash] != null) {
-                if (table[hash].key == key) {
+                if ((table[hash].key).toString().equals(key.toString())) {
                     table[hash] = new Node(key, value);
                     return null;
                 }
@@ -37,10 +38,6 @@ public class HashTable {
         return output;
     }
 
-    public boolean contains(Object key){
-        return get(key) != null;
-    }
-
     public int indexIncrement(int index){
         if (index + 1 < table.length){
             return index + 1;
@@ -50,7 +47,11 @@ public class HashTable {
     }
 
     public Object get(Object key){
-        return table[key.hashCode()%table.length].value;
+        int hash = key.hashCode()%table.length;
+        while (table[hash] != null && !table[hash].key.toString().equals(key.toString())){
+            hash++;
+        }
+        return table[hash] == null ? null : table[hash].value;
     }
 
     public void remove(Object key){
@@ -93,7 +94,7 @@ public class HashTable {
         }
 
         public String toString(){
-            String output = "key: " + key + "\tvalue: " + value;
+            String output = "<" + key + ", " + value + ">";
             return output;
         }
     }
