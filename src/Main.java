@@ -12,9 +12,7 @@ public class Main {
         while (in.hasNext()){
             int key = in.nextInt();
             String value = in.next();
-            test.put(key, value);
         }
         System.out.println(test);
-        System.out.println(test.size());
     }
 }

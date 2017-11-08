@@ -24,10 +24,12 @@ public class HashTable {
         if (table[hash] != null){
             output = table[hash].value;
             System.out.println("LINEAR PROBING: " + new Node(key, value));
-            while (table[hash] != null) {
+            while (table[hash] != null && !table[hash].removed) {
                 if ((table[hash].key).toString().equals(key.toString())) {
+                    Node oldNode = table[hash];
                     table[hash] = new Node(key, value);
-                    return null;
+
+                    return oldNode;
                 }
                 hash = indexIncrement(hash);
             }
@@ -49,31 +51,37 @@ public class HashTable {
     public Object get(Object key){
         int hash = key.hashCode()%table.length;
         while (table[hash] != null && !table[hash].key.toString().equals(key.toString())){
-            hash++;
+            hash = indexIncrement(hash);
         }
         return table[hash] == null ? null : table[hash].value;
     }
 
     public void remove(Object key){
-
+        if (!get(key).toString().equals("null")){
+            int hash = key.hashCode()%table.length;
+            while ((table[hash] != null || table[hash].removed) && !table[hash].key.toString().equals(key.toString())){
+                hash++;
+            }
+            table[hash].removed = true;
+            size--;
+        }
     }
 
     public String toString(){
         String output = "[";
         for (int i = 0; i < table.length-1; i++){
-            if (table[i] != null){
-                output += table[i].toString() + ", ";
-            } else {
+            if (table[i] == null || table[i].removed){
                 output += "NULL, ";
+            } else {
+                output += table[i].toString() + ", ";
             }
-
         }
         if (table[table.length-1] != null){
             output += table[table.length-1].toString() + "]";
         } else {
             output += "NULL]";
         }
-        return output;
+        return output + ", " + size;
     }
 
     public class Node {
@@ -94,8 +102,7 @@ public class HashTable {
         }
 
         public String toString(){
-            String output = "<" + key + ", " + value + ">";
-            return output;
+            return removed ? "REMOVED" : "<" + key + ", " + value + ">";
         }
     }
 
