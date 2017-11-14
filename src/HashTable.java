@@ -19,22 +19,22 @@ public class HashTable {
     }
 
     public Object put(Object key, Object value) {
+        if (table.length == size){
+            return null;
+        }
         Object output = null;
         int hash = key.hashCode()%table.length;
-        if (table[hash] != null){
-            output = table[hash].value;
-            System.out.println("LINEAR PROBING: " + new Node(key, value));
-            while (table[hash] != null && !table[hash].removed) {
-                if ((table[hash].key).toString().equals(key.toString())) {
-                    Node oldNode = table[hash];
-                    table[hash] = new Node(key, value);
-
-                    return oldNode;
-                }
-                hash = indexIncrement(hash);
+        int collisions = 0;
+        while (table[hash] != null && !table[hash].removed) {
+            collisions++;
+            if (table[hash].key.equals(key)) {
+                Node oldNode = table[hash];
+                table[hash] = new Node(key, value);
+                return oldNode;
             }
-            table[hash] = new Node(key, value);
+            hash = indexIncrement(hash);
         }
+
         table[hash] = new Node(key, value);
         size++;
         return output;
@@ -50,17 +50,17 @@ public class HashTable {
 
     public Object get(Object key){
         int hash = key.hashCode()%table.length;
-        while (table[hash] != null && !table[hash].key.toString().equals(key.toString())){
+        while (table[hash] != null && !table[hash].key.equals(key)){
             hash = indexIncrement(hash);
         }
         return table[hash] == null ? null : table[hash].value;
     }
 
     public void remove(Object key){
-        if (!get(key).toString().equals("null")){
+        if (!get(key).equals("null")){
             int hash = key.hashCode()%table.length;
-            while ((table[hash] != null || table[hash].removed) && !table[hash].key.toString().equals(key.toString())){
-                hash++;
+            while ((table[hash] != null || table[hash].removed) && !table[hash].key.equals(key)){
+                hash = indexIncrement(hash);
             }
             table[hash].removed = true;
             size--;
@@ -70,8 +70,10 @@ public class HashTable {
     public String toString(){
         String output = "[";
         for (int i = 0; i < table.length-1; i++){
-            if (table[i] == null || table[i].removed){
+            if (table[i] == null){
                 output += "NULL, ";
+            } else if (table[i].removed){
+                output += "REMOVED, ";
             } else {
                 output += table[i].toString() + ", ";
             }
@@ -102,7 +104,7 @@ public class HashTable {
         }
 
         public String toString(){
-            return removed ? "REMOVED" : "<" + key + ", " + value + ">";
+            return removed ? "DUMMY" : "<" + key + ", " + value + ">";
         }
     }
 
