@@ -4,27 +4,34 @@ import java.io.*;
 public class HashTable {
     Node[] table;
     int size;
+    int collisions;
     public HashTable(){
         table = new Node[101];
         size = 0;
+        collisions = 0;
     }
 
     public HashTable(int initCap){
         table = new Node[initCap];
         size = 0;
+        collisions = 0;
     }
-
+    public int getCollisions(){
+        return collisions;
+    };
     public int size(){
         return size;
     }
 
+    public double loadFactor(){
+        return (double)(size) / (double)table.length;
+    }
     public Object put(Object key, Object value) {
         if (table.length == size){
             return null;
         }
         Object output = null;
         int hash = key.hashCode()%table.length;
-        int collisions = 0;
         while (table[hash] != null && !table[hash].removed) {
             collisions++;
             if (table[hash].key.equals(key)) {
