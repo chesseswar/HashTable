@@ -6,46 +6,65 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Scanner inputs = new Scanner(new File("input.txt"));
-        ArrayList<String> files = new ArrayList<>();
-        while (inputs.hasNext()){
-            files.add(inputs.next());
-        }
+        Scanner in = new Scanner(new File("build.txt"));
+
+        double[] loadFactors = {.1, .5, .8, .9, 1};
         PrintWriter writer = new PrintWriter(new FileWriter("output.txt"));
-        //BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
-        for (String scanner : files){
-            writer.print("File: " + scanner + "\n");
-            writer.print("Collision Aversion: " + "Linear Probing\n");
-            Scanner in = new Scanner(new File(scanner));
-            double[] loadFactors = {.1, .5, .8, .9, 1};
-            ArrayList<String[]> input = new ArrayList<>();
-            while(in.hasNext()){
-                input.add(in.nextLine().split(" "));
+
+        writer.print("File: " + "build.txt" + "\n");
+        writer.print("Collision Aversion: " + "Linear Probing\nHash Function: Built-in Integer Class Hash Code\n");
+
+        ArrayList<String[]> input = new ArrayList<>();
+        while(in.hasNext()){
+            input.add(in.nextLine().split(" "));
+        }
+        writer.print("Items in table: " + input.size() + "\n\n");
+        String[] searches = {"successful.txt", "unsuccessful.txt"};
+        for (String str : searches) {
+            in = new Scanner(new File(str));
+            writer.printf(str + "\n");
+            ArrayList<Integer> keys = new ArrayList<>();
+            while (in.hasNext()) {
+                keys.add(in.nextInt());
+                in.nextLine();
             }
-            writer.print("Table Size Used: " + input.size() + "\n\n");
-            for (float d = .01f; d <= 1f; d+= .01f){
-                HashTable table = new HashTable(nextPrime((int)(((double)input.size())/d)));
+
+            for (/*float d = .01f; d <= 1f; d+= .01f*/ double d : loadFactors) {
+                HashTable table = new HashTable(nextPrime((int) (((double) input.size()) / d)));
                 long start = System.currentTimeMillis();
-                for (String[] data : input){
+                for (String[] data : input) {
                     table.put(Integer.parseInt(data[0]), data[1]);
                 }
                 long end = System.currentTimeMillis();
                 //writer.print("Time Taken: " + (end-start) + "\n");
-                writer.printf("%.10f\t%d \n", (double)((double)table.size())/((double)table.table.length), table.collisions);
+                writer.printf("Max Table Size: %d\t\t", table.table.length);
+                writer.printf("Load Factor: %.1f\t\tCollisions: %d\t\tAverage Insertion Time: %.5f\t\tCollisions vs. Insertions: %.3f%%\t\t", (double) ((double) table.size()) / ((double) table.table.length), table.collisions, ((double) (end - start)) / table.size(), 100 * ((double) (table.collisions) / (double) (table.size)));
+                //writer.printf("Average Time Per Search: %.3f\n", (double)(end-start) / (double)table.size);
                 //System.out.println("Collision Aversion: Linear Probing");
                 //System.out.println("Time taken: " + (end - start));
                 //System.out.println("Collisions: " + table.collisions);
                 //System.out.println();
+                start = System.currentTimeMillis();
+                for (int i = 0; i < keys.size(); i++) {
+                    table.get(keys.get(i));
+                }
+                end = System.currentTimeMillis();
+                writer.printf("Average Search Time: %.5f\n", (double)(end-start) / keys.size());
             }
-            writer.print("\n");
+            writer.printf("\n");
         }
+        writer.printf("\n\nSearch Statistics\n\n");
+
+
         writer.close();
     }
 
-    public static int nextPrime(int input){
+    public static int nextPrime(int input1){
+        int input = input1;
         while (!isPrime(input)){
             input++;
         }
+        System.out.println(input);
         return input;
     }
 
@@ -53,7 +72,7 @@ public class Main {
         if (input == 1 || input == 2){
             return true;
         }
-        for (int i = 3; i * i <= input; i++){
+        for (int i = 3; i*2 <= input; i++){
             if (input % i == 0){
                 return false;
             }

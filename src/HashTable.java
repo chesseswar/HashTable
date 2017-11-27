@@ -5,16 +5,19 @@ public class HashTable {
     Node[] table;
     int size;
     int collisions;
+    int searchCollisions;
     public HashTable(){
         table = new Node[101];
         size = 0;
         collisions = 0;
+        searchCollisions = 0;
     }
 
     public HashTable(int initCap){
         table = new Node[initCap];
         size = 0;
         collisions = 0;
+        searchCollisions = 0;
     }
     public int getCollisions(){
         return collisions;
@@ -31,7 +34,7 @@ public class HashTable {
             return null;
         }
         Object output = null;
-        int hash = key.hashCode()%table.length;
+        int hash = Math.abs(key.hashCode())%table.length;
         while (table[hash] != null && !table[hash].removed) {
             collisions++;
             if (table[hash].key.equals(key)) {
@@ -56,9 +59,10 @@ public class HashTable {
     }
 
     public Object get(Object key){
-        int hash = key.hashCode()%table.length;
+        int hash = Math.abs(key.hashCode())%table.length;
         while (table[hash] != null && !table[hash].key.equals(key)){
             hash = indexIncrement(hash);
+            searchCollisions++;
         }
         return table[hash] == null ? null : table[hash].value;
     }
