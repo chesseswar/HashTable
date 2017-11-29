@@ -9,17 +9,64 @@ public class Main {
         Scanner in = new Scanner(new File("build.txt"));
 
         double[] loadFactors = {.1, .5, .8, .9, 1};
-        PrintWriter writer = new PrintWriter(new FileWriter("output.txt"));
-
-        writer.print("File: " + "build.txt" + "\n");
-        writer.print("Collision Aversion: " + "Linear Probing\nHash Function: Built-in Integer Class Hash Code\n");
+        PrintWriter writer = new PrintWriter(new FileWriter("Book1.csv"));
 
         ArrayList<String[]> input = new ArrayList<>();
         while(in.hasNext()){
-            input.add(in.nextLine().split(" "));
+            String[] temp = new String[2];
+            temp[0] = in.next();
+            temp[1] = in.nextLine();
+            input.add(temp);
         }
-        writer.print("Items in table: " + input.size() + "\n\n");
-        String[] searches = {"successful.txt", "unsuccessful.txt"};
+
+        writer.println("Elements: " + input.size());
+        writer.println("Load Factor,Average Probes Per Insertion,Average Insertion Time,Average Search Time (Successful),Average Probes to Find Absent Element,Average Search Time (Unsuccessful)");
+
+        for (double d : loadFactors){
+            HashTable table = new HashTable(nextPrime((int) (((double) input.size()) / d)));
+            long start = System.currentTimeMillis();
+            for (String[] data : input){
+                table.put(data[0], data[1]);
+            }
+            long time = System.currentTimeMillis() - start;
+            double averageInsertionTime = ((double)(time) / (double)(input.size()));
+            double averageProbes = (double)(table.collisions) / (double)(input.size());
+
+
+            in = new Scanner(new File("successful.txt"));
+            ArrayList<String> keys = new ArrayList<>();
+            while (in.hasNext()){
+                keys.add(in.next());
+                in.nextLine();
+            }
+            start = System.currentTimeMillis();
+            for (String find : keys){
+                table.get(find);
+            }
+            double averageFindTimeSucc = (double)(System.currentTimeMillis() - start) / (double)(keys.size());
+
+            in = new Scanner(new File("unsuccessful.txt"));
+            keys.clear();
+            while (in.hasNext()){
+                keys.add(in.next());
+                in.nextLine();
+            }
+            start = System.currentTimeMillis();
+            for (String find : keys){
+                table.get(find);
+            }
+            double averageFindTimeUnsucc = (double)(System.currentTimeMillis() - start) / (double)(keys.size());
+            double averageProbesUnsucc = (double)(table.searchCollisions) / (double)(keys.size());
+            writer.println(d + "," + averageProbes + "," + averageInsertionTime + "," + averageFindTimeSucc+ "," + averageFindTimeUnsucc + "," + averageFindTimeUnsucc);
+            System.out.println("Load Factor: " + d);
+            System.out.println(("Average Probes Per Insertion: " + averageProbes));
+            System.out.println(("Average Insertion Time: " + averageInsertionTime));
+            System.out.println(("Average Search Time (Successful): " + averageFindTimeSucc));
+            System.out.println(("Average Probes To Find Absent Element: " + averageProbesUnsucc));
+            System.out.println(("Average Search Time (Unsuccessful): " + averageFindTimeUnsucc) + "\n");
+        }
+
+        /*
         for (String str : searches) {
             in = new Scanner(new File(str));
             writer.printf(str + "\n");
@@ -29,7 +76,7 @@ public class Main {
                 in.nextLine();
             }
 
-            for (/*float d = .01f; d <= 1f; d+= .01f*/ double d : loadFactors) {
+            for (/*float d = .01f; d <= 1f; d+= .01f double d : loadFactors) {
                 HashTable table = new HashTable(nextPrime((int) (((double) input.size()) / d)));
                 long start = System.currentTimeMillis();
                 for (String[] data : input) {
@@ -52,9 +99,7 @@ public class Main {
                 writer.printf("Average Search Time: %.5f\n", (double)(end-start) / keys.size());
             }
             writer.printf("\n");
-        }
-        writer.printf("\n\nSearch Statistics\n\n");
-
+        }*/
 
         writer.close();
     }
@@ -64,7 +109,6 @@ public class Main {
         while (!isPrime(input)){
             input++;
         }
-        System.out.println(input);
         return input;
     }
 

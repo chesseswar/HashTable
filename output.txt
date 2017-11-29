@@ -1,23 +1,7 @@
-File: build.txt
-Collision Aversion: Linear Probing
-Hash Function: Built-in Integer Class Hash Code
-Items in table: 50000
+Items in table: 500000
 
-successful.txt
-Max Table Size: 500009		Load Factor: 0.1		Collisions: 2713		Average Insertion Time: 0.00124		Collisions vs. Insertions: 5.426%		Average Search Time: 0.00000
-Max Table Size: 100003		Load Factor: 0.5		Collisions: 25410		Average Insertion Time: 0.00124		Collisions vs. Insertions: 50.822%		Average Search Time: 0.00000
-Max Table Size: 62501		Load Factor: 0.8		Collisions: 99239		Average Insertion Time: 0.00062		Collisions vs. Insertions: 198.486%		Average Search Time: 0.00000
-Max Table Size: 55579		Load Factor: 0.9		Collisions: 228399		Average Insertion Time: 0.00032		Collisions vs. Insertions: 456.816%		Average Search Time: 0.00000
-Max Table Size: 50021		Load Factor: 1.0		Collisions: 3128236		Average Insertion Time: 0.00094		Collisions vs. Insertions: 6256.722%		Average Search Time: 0.00000
-
-unsuccessful.txt
-Max Table Size: 500009		Load Factor: 0.1		Collisions: 2713		Average Insertion Time: 0.00000		Collisions vs. Insertions: 5.426%		Average Search Time: 0.00000
-Max Table Size: 100003		Load Factor: 0.5		Collisions: 25410		Average Insertion Time: 0.00032		Collisions vs. Insertions: 50.822%		Average Search Time: 0.00000
-Max Table Size: 62501		Load Factor: 0.8		Collisions: 99239		Average Insertion Time: 0.00032		Collisions vs. Insertions: 198.486%		Average Search Time: 0.01500
-Max Table Size: 55579		Load Factor: 0.9		Collisions: 228399		Average Insertion Time: 0.00032		Collisions vs. Insertions: 456.816%		Average Search Time: 0.00000
-Max Table Size: 50021		Load Factor: 1.0		Collisions: 3128236		Average Insertion Time: 0.00094		Collisions vs. Insertions: 6256.722%		Average Search Time: 0.15600
-
-
-
-Search Statistics
-
+5000011
+1000003
+625007
+555557
+500009

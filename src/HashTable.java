@@ -60,9 +60,14 @@ public class HashTable {
 
     public Object get(Object key){
         int hash = Math.abs(key.hashCode())%table.length;
-        while (table[hash] != null && !table[hash].key.equals(key)){
-            hash = indexIncrement(hash);
+        final int HASH = hash;
+        while (table[hash] != null && !table[hash].key.equals(key) && hash != HASH){
             searchCollisions++;
+            hash = indexIncrement(hash);
+            if (hash == HASH){
+                return null;
+            }
+
         }
         return table[hash] == null ? null : table[hash].value;
     }
