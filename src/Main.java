@@ -8,7 +8,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(new File("build.txt"));
 
-        double[] loadFactors = {.1, .5, .8, .9, 1};
+        ArrayList<Double> loadFactors = new ArrayList<>();
+        loadFactors.add(1.0);/*
+        for (double i = .1; i <= 1.001; i += .001){
+            loadFactors.add(i);
+        }*/
         PrintWriter writer = new PrintWriter(new FileWriter("Book1.csv"));
 
         ArrayList<String[]> input = new ArrayList<>();
@@ -20,7 +24,7 @@ public class Main {
         }
 
         writer.println("Elements: " + input.size());
-        writer.println("Load Factor,Average Probes Per Insertion,Average Insertion Time,Average Search Time (Successful),Average Probes to Find Absent Element,Average Search Time (Unsuccessful)");
+        writer.println("Load Factor,Average Probes Per Insertion,Average Insertion Time,Average Search Time (Successful),Average Probes Per Search (Successful),Average Probes to Find Absent Element,Average Search Time (Unsuccessful)");
 
         for (double d : loadFactors){
             HashTable table = new HashTable(nextPrime((int) (((double) input.size()) / d)));
@@ -44,7 +48,7 @@ public class Main {
                 table.get(find);
             }
             double averageFindTimeSucc = (double)(System.currentTimeMillis() - start) / (double)(keys.size());
-
+            double averageProbesSucc = (double) (table.searchCollisions) / (double)(keys.size());
             in = new Scanner(new File("unsuccessful.txt"));
             keys.clear();
             while (in.hasNext()){
@@ -57,7 +61,7 @@ public class Main {
             }
             double averageFindTimeUnsucc = (double)(System.currentTimeMillis() - start) / (double)(keys.size());
             double averageProbesUnsucc = (double)(table.searchCollisions) / (double)(keys.size());
-            writer.println(d + "," + averageProbes + "," + averageInsertionTime + "," + averageFindTimeSucc+ "," + averageFindTimeUnsucc + "," + averageFindTimeUnsucc);
+            writer.println(d + "," + averageProbes + "," + averageInsertionTime + "," + averageFindTimeSucc+ "," + averageProbesSucc + "," + averageFindTimeUnsucc + "," + averageProbesUnsucc);
             System.out.println("Load Factor: " + d);
             System.out.println(("Average Probes Per Insertion: " + averageProbes));
             System.out.println(("Average Insertion Time: " + averageInsertionTime));

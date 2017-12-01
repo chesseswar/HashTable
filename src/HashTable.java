@@ -5,7 +5,7 @@ public class HashTable {
     Node[] table;
     int size;
     int collisions;
-    int searchCollisions;
+    long searchCollisions;
     public HashTable(){
         table = new Node[101];
         size = 0;
@@ -60,14 +60,11 @@ public class HashTable {
 
     public Object get(Object key){
         int hash = Math.abs(key.hashCode())%table.length;
-        final int HASH = hash;
-        while (table[hash] != null && !table[hash].key.equals(key) && hash != HASH){
+        int count = 0;
+        while (table[hash] != null && !table[hash].key.equals(key) && count < size+1){
+            count ++;
             searchCollisions++;
             hash = indexIncrement(hash);
-            if (hash == HASH){
-                return null;
-            }
-
         }
         return table[hash] == null ? null : table[hash].value;
     }
