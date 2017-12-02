@@ -6,13 +6,24 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        Scanner in = new Scanner(new File("input.txt"));
+        HashTable table = new HashTable(20);
+        while (in.hasNext()){
+            int temp = in.nextInt();
+            table.put(temp, in.nextLine(), 3);
+            System.out.println(table);
+        }
+        System.out.println(table);
+
+
+        /*
         Scanner in = new Scanner(new File("build.txt"));
-        //HMMM TEST GITHUB PLEZ
+
         ArrayList<Double> loadFactors = new ArrayList<>();
         loadFactors.add(1.0);/*
         for (double i = .1; i <= 1.001; i += .001){
             loadFactors.add(i);
-        }*/
+        }
         PrintWriter writer = new PrintWriter(new FileWriter("Book1.csv"));
 
         ArrayList<String[]> input = new ArrayList<>();
@@ -103,9 +114,9 @@ public class Main {
                 writer.printf("Average Search Time: %.5f\n", (double)(end-start) / keys.size());
             }
             writer.printf("\n");
-        }*/
+        }
 
-        writer.close();
+        writer.close();*/
     }
 
     public static int nextPrime(int input1){
