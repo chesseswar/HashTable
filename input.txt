@@ -1,6 +1,0 @@
-1 Pranav
-101 Brian
-81 Sahil
-61 Preston
-41 Parker
-21 bleh

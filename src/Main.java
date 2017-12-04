@@ -7,15 +7,12 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(new File("input.txt"));
-        HashTable table = new HashTable(20);
+        HashTable table = new HashTable(23);
         while (in.hasNext()){
             int temp = in.nextInt();
-            table.put(temp, in.nextLine(), 3);
+            table.put(temp, in.nextLine(), 2);
             System.out.println(table);
         }
-        System.out.println(table);
-
-
         /*
         Scanner in = new Scanner(new File("build.txt"));
 

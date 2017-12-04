@@ -91,7 +91,8 @@ public class HashTable {
 
     public int quadraticIncrement(int index, int count){
         int newIndex = index + (int)(Math.pow(2,count));
-        return newIndex >= table.length ? newIndex - table.length : newIndex;
+        System.out.println((newIndex >= table.length ? newIndex % table.length: newIndex));
+        return newIndex >= table.length ? newIndex % table.length : newIndex;
     }
 
     public int linearIncrement(int index){
